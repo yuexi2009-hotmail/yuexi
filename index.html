@@ -52,7 +52,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            color: #0071e3;
+            color: #0d0c22;
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 12px;
@@ -116,8 +116,8 @@
             border-radius: 50%;
             background: white;
             cursor: grab;
-            border: 3px dashed #7c3aed;
-            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+            border: none;
+            box-shadow: 0 2px 8px rgba(13, 12, 34, 0.3);
             transition: all 0.2s ease;
             position: relative;
             z-index: 10;
@@ -125,7 +125,7 @@
 
         input[type="range"]::-webkit-slider-thumb:hover {
             transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+            box-shadow: 0 4px 12px rgba(13, 12, 34, 0.4);
         }
 
         input[type="range"]::-webkit-slider-thumb:active {
@@ -138,14 +138,14 @@
             border-radius: 50%;
             background: white;
             cursor: grab;
-            border: 3px dashed #7c3aed;
-            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+            border: none;
+            box-shadow: 0 2px 8px rgba(13, 12, 34, 0.3);
             transition: all 0.2s ease;
         }
 
         input[type="range"]::-moz-range-thumb:hover {
             transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+            box-shadow: 0 4px 12px rgba(13, 12, 34, 0.4);
         }
 
         input[type="range"]::-moz-range-thumb:active {
@@ -180,11 +180,11 @@
         }
 
         .slider-dot.filled {
-            background: #3b82f6;
+            background: #0d0c22;
         }
 
         .slider-dot.active {
-            background: #7c3aed;
+            background: #0d0c22;
             transform: scale(1.3);
         }
 
@@ -204,7 +204,7 @@
         }
 
         .slider-label.active {
-            color: #7c3aed;
+            color: #0d0c22;
             font-weight: 600;
             transform: scale(1.1);
         }
@@ -227,12 +227,12 @@
         }
 
         .primary-btn {
-            background: #0071e3;
+            background: #0d0c22;
             color: white;
         }
 
         .primary-btn:hover {
-            background: #0077ed;
+            background: #1a1830;
         }
 
         .primary-btn:active {
@@ -314,7 +314,7 @@
             gap: 8px;
             font-size: 17px;
             font-weight: 600;
-            color: #0071e3;
+            color: #0d0c22;
         }
 
         .empty-state {
@@ -455,9 +455,9 @@
             const value = parseInt(this.value);
             updateSliderUI(value);
 
-            // Update slider background gradient (blue to purple gradient)
+            // Update slider background (solid color, no gradient)
             const percentage = (value / 5) * 100;
-            this.style.background = `linear-gradient(to right, #3b82f6 0%, #7c3aed ${percentage}%, #d1d1d6 ${percentage}%, #d1d1d6 100%)`;
+            this.style.background = `linear-gradient(to right, #0d0c22 0%, #0d0c22 ${percentage}%, #d1d1d6 ${percentage}%, #d1d1d6 100%)`;
         });
 
         function updateSliderUI(value) {
@@ -561,8 +561,8 @@
                     datasets: [{
                         label: 'Mood Score',
                         data: [],
-                        backgroundColor: '#0071e3',
-                        borderColor: '#0071e3',
+                        backgroundColor: '#0d0c22',
+                        borderColor: '#0d0c22',
                         pointRadius: 6,
                         pointHoverRadius: 8
                     }]
