@@ -351,6 +351,31 @@
             font-size: 17px;
         }
 
+        /* Readonly mode styles */
+        .readonly-mode .section:first-of-type {
+            display: none;
+        }
+
+        .readonly-mode .delete-btn {
+            display: none;
+        }
+
+        .readonly-banner {
+            display: none;
+            background: #e3f2fd;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            text-align: center;
+            color: #0d0c22;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .readonly-mode .readonly-banner {
+            display: block;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 40px 24px;
@@ -391,6 +416,11 @@
     <div class="container">
         <h1>Mood Tracker</h1>
         <p class="subtitle">Track your emotional journey</p>
+
+        <!-- Readonly mode banner -->
+        <div class="readonly-banner">
+            📊 View-only mode - You can see the mood timeline but cannot make changes
+        </div>
 
         <!-- Section 1: Mood Intensity Slider -->
         <div class="section">
@@ -785,7 +815,22 @@
             }, 250);
         });
 
+        // Check if readonly mode
+        function isReadonlyMode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('readonly') === 'true';
+        }
+
+        // Apply readonly mode
+        function applyReadonlyMode() {
+            if (isReadonlyMode()) {
+                document.body.classList.add('readonly-mode');
+                console.log('Readonly mode enabled');
+            }
+        }
+
         window.addEventListener('load', function() {
+            applyReadonlyMode();
             loadData();
             initChart();
             updateUI();
