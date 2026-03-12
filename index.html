@@ -594,7 +594,10 @@
                             ticks: {
                                 color: '#86868b',
                                 maxRotation: 45,
-                                minRotation: 0
+                                minRotation: 0,
+                                autoSkip: true,
+                                autoSkipPadding: 20,
+                                maxTicksLimit: window.innerWidth < 768 ? 5 : 10
                             }
                         },
                         y: {
@@ -620,7 +623,25 @@
                             display: false
                         },
                         tooltip: {
+                            backgroundColor: 'rgba(13, 12, 34, 0.9)',
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff',
+                            borderColor: '#0d0c22',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: false,
                             callbacks: {
+                                title: function(context) {
+                                    // Format the date
+                                    const date = new Date(context[0].parsed.x);
+                                    return date.toLocaleString('en-US', {
+                                        month: 'short',
+                                        day: 'numeric',
+                                        year: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    });
+                                },
                                 label: function(context) {
                                     const mood = context.parsed.y;
                                     return `Mood: ${mood}`;
@@ -695,12 +716,14 @@
             `).join('');
         }
 
-        // Handle window resize for responsive time units
+        // Handle window resize for responsive time units and tick limits
         let resizeTimer;
         window.addEventListener('resize', function() {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(function() {
                 if (chart) {
+                    // Update max ticks based on screen size
+                    chart.options.scales.x.ticks.maxTicksLimit = window.innerWidth < 768 ? 5 : 10;
                     updateChart();
                 }
             }, 250);
