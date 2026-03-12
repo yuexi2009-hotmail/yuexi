@@ -295,9 +295,10 @@
         }
 
         .record-item {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr auto auto;
             align-items: center;
+            gap: 24px;
             padding: 16px 24px;
             background: #f5f5f7;
             border-radius: 12px;
@@ -307,12 +308,6 @@
 
         .record-item:hover {
             background: #e8e8ed;
-        }
-
-        .record-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
         }
 
         .record-time {
@@ -746,11 +741,9 @@
 
             container.innerHTML = sortedData.map((record, index) => `
                 <div class="record-item">
-                    <div class="record-info">
-                        <div class="record-time">${record.date}</div>
-                        <div class="record-score">
-                            <span>${record.mood}</span>
-                        </div>
+                    <div class="record-time">${record.date}</div>
+                    <div class="record-score">
+                        <span>${record.mood}</span>
                     </div>
                     <button class="delete-btn" onclick="deleteRecord(${moodData.length - 1 - index})" title="Delete record">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
