@@ -301,6 +301,18 @@
             background: #f5f5f7;
             border-radius: 12px;
             margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .record-item:hover {
+            background: #e8e8ed;
+        }
+
+        .record-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex: 1;
         }
 
         .record-time {
@@ -315,6 +327,23 @@
             font-size: 17px;
             font-weight: 600;
             color: #0d0c22;
+        }
+
+        .delete-btn {
+            padding: 8px 16px;
+            background: transparent;
+            color: #86868b;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-left: 16px;
+        }
+
+        .delete-btn:hover {
+            background: #ff3b30;
+            color: white;
         }
 
         .empty-state {
@@ -580,9 +609,9 @@
                                 unit: 'day',
                                 displayFormats: {
                                     hour: 'HH:mm',
-                                    day: 'yyyy-M-d',
-                                    week: 'yyyy-M-d',
-                                    month: 'yyyy-M'
+                                    day: 'MMM d',
+                                    week: 'MMM d',
+                                    month: 'MMM yyyy'
                                 }
                             },
                             title: {
@@ -590,18 +619,20 @@
                             },
                             grid: {
                                 color: '#e5e5e7',
-                                drawBorder: true
+                                drawBorder: true,
+                                display: true
                             },
                             ticks: {
                                 color: '#86868b',
                                 maxRotation: 0,
                                 minRotation: 0,
                                 autoSkip: true,
-                                autoSkipPadding: 30,
+                                autoSkipPadding: 20,
                                 maxTicksLimit: window.innerWidth < 768 ? 4 : window.innerWidth < 1024 ? 6 : 8,
                                 font: {
                                     size: 12
-                                }
+                                },
+                                display: true
                             }
                         },
                         y: {
@@ -710,14 +741,25 @@
 
             const sortedData = [...moodData].reverse();
 
-            container.innerHTML = sortedData.map(record => `
+            container.innerHTML = sortedData.map((record, index) => `
                 <div class="record-item">
-                    <div class="record-time">${record.date}</div>
-                    <div class="record-score">
-                        <span>${record.mood}</span>
+                    <div class="record-info">
+                        <div class="record-time">${record.date}</div>
+                        <div class="record-score">
+                            <span>${record.mood}</span>
+                        </div>
                     </div>
+                    <button class="delete-btn" onclick="deleteRecord(${moodData.length - 1 - index})">Delete</button>
                 </div>
             `).join('');
+        }
+
+        function deleteRecord(index) {
+            if (confirm('Delete this record?')) {
+                moodData.splice(index, 1);
+                saveData();
+                updateUI();
+            }
         }
 
         // Handle window resize for responsive time units and tick limits
