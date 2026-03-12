@@ -543,14 +543,17 @@
             const week = 7 * day;
             const month = 30 * day;
 
-            const screenWidth = window.innerWidth;
+            // If data range is within a day, show hours (like 12:00, 13:00)
+            if (timeRangeMs < day) return 'hour';
 
-            if (timeRangeMs < hour * 6) return 'hour';
-            if (timeRangeMs < day * 2) return screenWidth < 768 ? 'hour' : 'hour';
-            if (timeRangeMs < week) return screenWidth < 768 ? 'day' : 'day';
-            if (timeRangeMs < month) return screenWidth < 768 ? 'day' : 'day';
-            if (timeRangeMs < month * 3) return screenWidth < 768 ? 'week' : 'day';
-            return screenWidth < 768 ? 'month' : 'week';
+            // If data range is within a week, show days (like 2020-10-1)
+            if (timeRangeMs < week) return 'day';
+
+            // If data range is within a month, show days
+            if (timeRangeMs < month) return 'day';
+
+            // For longer ranges, show weeks
+            return 'week';
         }
 
         function initChart() {
@@ -577,27 +580,30 @@
                                 unit: 'day',
                                 displayFormats: {
                                     hour: 'HH:mm',
-                                    day: 'MMM dd',
-                                    week: 'MMM dd',
-                                    month: 'MMM yyyy'
-                                }
+                                    day: 'YYYY-M-D',
+                                    week: 'YYYY-M-D',
+                                    month: 'YYYY-M'
+                                },
+                                tooltipFormat: 'YYYY-MM-DD HH:mm'
                             },
                             title: {
-                                display: true,
-                                text: 'Time',
-                                color: '#86868b',
-                                font: { size: 14 }
+                                display: false
                             },
                             grid: {
-                                color: '#e5e5e7'
+                                color: '#e5e5e7',
+                                drawBorder: true,
+                                drawTicks: true
                             },
                             ticks: {
                                 color: '#86868b',
-                                maxRotation: 45,
+                                maxRotation: 0,
                                 minRotation: 0,
                                 autoSkip: true,
-                                autoSkipPadding: 20,
-                                maxTicksLimit: window.innerWidth < 768 ? 5 : 10
+                                autoSkipPadding: 30,
+                                maxTicksLimit: window.innerWidth < 768 ? 4 : window.innerWidth < 1024 ? 6 : 8,
+                                font: {
+                                    size: 12
+                                }
                             }
                         },
                         y: {
@@ -723,7 +729,14 @@
             resizeTimer = setTimeout(function() {
                 if (chart) {
                     // Update max ticks based on screen size
-                    chart.options.scales.x.ticks.maxTicksLimit = window.innerWidth < 768 ? 5 : 10;
+                    const width = window.innerWidth;
+                    if (width < 768) {
+                        chart.options.scales.x.ticks.maxTicksLimit = 4;
+                    } else if (width < 1024) {
+                        chart.options.scales.x.ticks.maxTicksLimit = 6;
+                    } else {
+                        chart.options.scales.x.ticks.maxTicksLimit = 8;
+                    }
                     updateChart();
                 }
             }, 250);
